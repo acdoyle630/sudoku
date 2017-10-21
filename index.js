@@ -2,6 +2,8 @@
 
 const sudokoSolve = function(matrix){
   let totalZeros = 0;
+  let firstLength = 9;
+  let unchangedPass = true;
   let rotatedMatrix = rotateMatrix(matrix);
   let section1 = [matrix[0][0], matrix[0][1], matrix[0][2], matrix[1][0], matrix[1][1], matrix[1][2], matrix[2][0], matrix[2][1], matrix[2][2]];
   let section2 = [matrix[0][3], matrix[0][4], matrix[0][5], matrix[1][3], matrix[1][4], matrix[1][5], matrix[2][3], matrix[2][4], matrix[2][5]];
@@ -54,20 +56,24 @@ const sudokoSolve = function(matrix){
         // console.log("NEW ARRAY: " + newArray);
         // console.log("NEW ARRAY LENGTH: " +newArray[1].length);
         // console.log("SECTION: " + section);
-        if(newArray[1].length === 9){
+        if(newArray[1].length === firstLength){
+          unchangedPass = false;
           matrix[i][j] = (45 - newArray[0]);
         }
 
       }
     }
   }
-  if(totalZeros > 0){
+  if(totalZeros > 0 && unchangedPass === false){
     //console.log(matrix);
-
     sudokoSolve(matrix);
   }
-  else {
-    console.log(matrix);
+  if(totalZeros > 0 && unchangedPass === true){
+    moreLogic(matrix);
+  }
+  if(totalZeros === 0) {
+    console.log("SOLVED:");
+      console.log(matrix);
     return matrix;
   }
 };
@@ -102,6 +108,12 @@ function compareArrays(arr1, arr2, arr3){
   return [arrayTotal, combinedArray];
 }
 
+function moreLogic(matrix){
+  console.log("UNSOLVED:");
+  console.log(matrix);
+}
+
+
 sudokoSolve(
 [
 [3, 7, 1, 5, 9, 4, 8, 0, 0],
@@ -109,8 +121,8 @@ sudokoSolve(
 [4, 9, 0, 0, 0, 0, 7, 0, 5],
 [0, 1, 0, 9, 0, 0, 0, 0, 0],
 [9, 0, 2, 0, 0, 0, 6, 0, 3],
-[0, 0, 0, 0, 0, 8, 0, 2, 0],
+[0, 0, 0, 0, 0, 8, 0, 0, 0],
 [8, 4, 5, 0, 0, 0, 0, 7, 6],
 [0, 0, 0, 6, 0, 7, 0, 0, 0],
-[1, 6, 7, 0, 4, 0, 3, 5, 0]
+[1, 6, 7, 8, 4, 0, 3, 5, 0]
 ]);
